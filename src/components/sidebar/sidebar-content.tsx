@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Prompt } from "@/generated/prisma/browser";
 import { Button } from "../ui/button";
 import {
   ArrowLeftToLine,
@@ -11,9 +10,15 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Logo } from "../logo";
+import { Prompt } from "@/model/prompt";
 
-export const SidebarContent = (prompts: Prompt[]) => {
+export type SidebarContentProps = {
+  prompts: Prompt[];
+};
+
+export const SidebarContent = ({ prompts }: SidebarContentProps) => {
   const router = useRouter();
+
   const [isCollapsed, setIsCollapset] = useState(false);
 
   const collapsedSidebar = () => setIsCollapset(true);
@@ -59,6 +64,8 @@ export const SidebarContent = (prompts: Prompt[]) => {
               <header className="flex w-full items-center justify-between">
                 <Logo />
                 <Button
+                  aria-label="Colapsar sidebar"
+                  title="Colapsar sidebar"
                   onClick={collapsedSidebar}
                   variant={"icon"}
                   className="hidden md:inline-flex p-2 hover:bg-gray-700 focus:outline-none focus:ring-2 
@@ -78,6 +85,10 @@ export const SidebarContent = (prompts: Prompt[]) => {
           </section>
         </>
       )}
+
+      {prompts.map((prompt) => (
+        <p key={prompt.id}>{prompt.title}</p>
+      ))}
     </aside>
   );
 };
